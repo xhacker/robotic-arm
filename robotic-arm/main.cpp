@@ -142,7 +142,12 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Accumulate ModelView Matrix as we traverse the tree
-    model_view = RotateY(Theta[Base]);
+    if (is_side_view) {
+        model_view = RotateY(Theta[Base]);
+    }
+    else {
+        model_view = RotateX(-90) * RotateY(Theta[Base]);
+    }
     base();
 
     model_view *= (Translate(0.0, BASE_HEIGHT, 0.0) * RotateZ(Theta[LowerArm]));
@@ -235,6 +240,8 @@ void menu(int option)
             glutChangeToMenuEntry(4, "side view", SwitchView);
         }
         is_side_view = !is_side_view;
+
+        glutPostRedisplay();
     }
     else {
         Axis = option;

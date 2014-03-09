@@ -259,6 +259,7 @@
 				1A2CAACC18CBE4B20038FD74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
