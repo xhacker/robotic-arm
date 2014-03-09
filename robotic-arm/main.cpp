@@ -20,10 +20,10 @@ point4 points[NumVertices];
 color4 colors[NumVertices];
 
 point4 vertices[8] = {
-    point4(-0.5, -0.5, 0.5, 1.0), point4(-0.5, 0.5, 0.5, 1.0),
-    point4(0.5, 0.5, 0.5, 1.0), point4(0.5, -0.5, 0.5, 1.0),
-    point4(-0.5, -0.5, -0.5, 1.0), point4(-0.5, 0.5, -0.5, 1.0),
-    point4(0.5, 0.5, -0.5, 1.0), point4(0.5, -0.5, -0.5, 1.0)
+    point4(-0.5, -0.5,  0.5, 1.0), point4(-0.5,  0.5,  0.5, 1.0),
+    point4( 0.5,  0.5,  0.5, 1.0), point4( 0.5, -0.5,  0.5, 1.0),
+    point4(-0.5, -0.5, -0.5, 1.0), point4(-0.5,  0.5, -0.5, 1.0),
+    point4( 0.5,  0.5, -0.5, 1.0), point4( 0.5, -0.5, -0.5, 1.0)
 };
 
 // RGBA olors
@@ -38,6 +38,7 @@ color4 vertex_colors[8] = { color4(0.0, 0.0, 0.0, 1.0), // black
 };
 
 // Parameters controlling the size of the Robot's arm
+const GLfloat SPHERE_R = 0.5;
 const GLfloat BASE_HEIGHT = 2.0;
 const GLfloat BASE_WIDTH = 5.0;
 const GLfloat LOWER_ARM_HEIGHT = 5.0;
@@ -64,6 +65,7 @@ const int Quit = 4;
 const int SwitchView = 5;
 
 bool is_side_view = true;
+double old_x, old_y, old_z, new_x, new_y, new_z;
 
 //----------------------------------------------------------------------------
 
@@ -103,11 +105,20 @@ void colorcube()
 
 //----------------------------------------------------------------------------
 
-/* Define the three parts */
+/* Define the four parts */
 /* Note use of push/pop to return modelview matrix
  to its state before functions were entered and use
  rotation, translation, and scaling to create instances
  of symbols (cube and cylinder */
+
+void sphere()
+{
+    mat4 instance = (Translate(old_x, old_y, old_z) * Scale(SPHERE_R, SPHERE_R, SPHERE_R));
+
+    glUniformMatrix4fv(ModelView, 1, GL_TRUE, model_view * instance);
+
+    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+}
 
 void base()
 {
@@ -144,13 +155,15 @@ void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Accumulate ModelView Matrix as we traverse the tree
     if (is_side_view) {
-        model_view = RotateY(Theta[Base]);
+        model_view = RotateX(0);
     }
     else {
-        model_view = RotateX(-90) * RotateY(Theta[Base]);
+        model_view = RotateX(-90);
     }
+    sphere();
+
+    model_view *= RotateY(Theta[Base]);
     base();
 
     model_view *= (Translate(0.0, BASE_HEIGHT, 0.0) * RotateZ(Theta[LowerArm]));
@@ -301,7 +314,6 @@ int main(int argc, char** argv)
             return 0;
         }
 
-        double old_x, old_y, old_z, new_x, new_y, new_z;
         old_x = atof(argv[1]);
         old_y = atof(argv[2]);
         old_z = atof(argv[3]);
