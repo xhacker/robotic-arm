@@ -8,26 +8,38 @@
 
 /* Begin PBXBuildFile section */
 		1A2CAAC518CBE4B20038FD74 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A2CAAC418CBE4B20038FD74 /* main.cpp */; };
-		1A2CAAC718CBE4B20038FD74 /* robotic_arm.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAC618CBE4B20038FD74 /* robotic_arm.1 */; };
+		1A2CAAD218CBE59E0038FD74 /* InitShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A2CAAD118CBE59E0038FD74 /* InitShader.cpp */; };
+		1A2CAAD418CBE5DC0038FD74 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2CAAD318CBE5DC0038FD74 /* OpenGL.framework */; };
+		1A2CAAD618CBE5E00038FD74 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2CAAD518CBE5E00038FD74 /* GLUT.framework */; };
+		1A2CAADA18CBE6260038FD74 /* fshader81.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAD718CBE6020038FD74 /* fshader81.glsl */; };
+		1A2CAADB18CBE6260038FD74 /* vshader81.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAD818CBE6020038FD74 /* vshader81.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		1A2CAABF18CBE4B20038FD74 /* CopyFiles */ = {
+		1A2CAAD918CBE6200038FD74 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			dstPath = "";
+			dstSubfolderSpec = 7;
 			files = (
-				1A2CAAC718CBE4B20038FD74 /* robotic_arm.1 in CopyFiles */,
+				1A2CAADA18CBE6260038FD74 /* fshader81.glsl in CopyFiles */,
+				1A2CAADB18CBE6260038FD74 /* vshader81.glsl in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1A2CAAC118CBE4B20038FD74 /* robotic-arm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "robotic-arm"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2CAAC418CBE4B20038FD74 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		1A2CAAC618CBE4B20038FD74 /* robotic_arm.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = robotic_arm.1; sourceTree = "<group>"; };
+		1A2CAACD18CBE53F0038FD74 /* Angel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Angel.h; sourceTree = "<group>"; };
+		1A2CAACE18CBE56D0038FD74 /* mat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mat.h; sourceTree = "<group>"; };
+		1A2CAACF18CBE56D0038FD74 /* vec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vec.h; sourceTree = "<group>"; };
+		1A2CAAD118CBE59E0038FD74 /* InitShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InitShader.cpp; sourceTree = "<group>"; };
+		1A2CAAD318CBE5DC0038FD74 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		1A2CAAD518CBE5E00038FD74 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		1A2CAAD718CBE6020038FD74 /* fshader81.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fshader81.glsl; sourceTree = "<group>"; };
+		1A2CAAD818CBE6020038FD74 /* vshader81.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vshader81.glsl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +47,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A2CAAD618CBE5E00038FD74 /* GLUT.framework in Frameworks */,
+				1A2CAAD418CBE5DC0038FD74 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +58,8 @@
 		1A2CAAB818CBE4B20038FD74 = {
 			isa = PBXGroup;
 			children = (
+				1A2CAAD518CBE5E00038FD74 /* GLUT.framework */,
+				1A2CAAD318CBE5DC0038FD74 /* OpenGL.framework */,
 				1A2CAAC318CBE4B20038FD74 /* robotic-arm */,
 				1A2CAAC218CBE4B20038FD74 /* Products */,
 			);
@@ -61,9 +77,22 @@
 			isa = PBXGroup;
 			children = (
 				1A2CAAC418CBE4B20038FD74 /* main.cpp */,
-				1A2CAAC618CBE4B20038FD74 /* robotic_arm.1 */,
+				1A2CAAD118CBE59E0038FD74 /* InitShader.cpp */,
+				1A2CAAD718CBE6020038FD74 /* fshader81.glsl */,
+				1A2CAAD818CBE6020038FD74 /* vshader81.glsl */,
+				1A2CAAD018CBE56F0038FD74 /* Headers */,
 			);
 			path = "robotic-arm";
+			sourceTree = "<group>";
+		};
+		1A2CAAD018CBE56F0038FD74 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				1A2CAACD18CBE53F0038FD74 /* Angel.h */,
+				1A2CAACE18CBE56D0038FD74 /* mat.h */,
+				1A2CAACF18CBE56D0038FD74 /* vec.h */,
+			);
+			name = Headers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -75,7 +104,7 @@
 			buildPhases = (
 				1A2CAABD18CBE4B20038FD74 /* Sources */,
 				1A2CAABE18CBE4B20038FD74 /* Frameworks */,
-				1A2CAABF18CBE4B20038FD74 /* CopyFiles */,
+				1A2CAAD918CBE6200038FD74 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -117,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A2CAAD218CBE59E0038FD74 /* InitShader.cpp in Sources */,
 				1A2CAAC518CBE4B20038FD74 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
