@@ -7,6 +7,9 @@
 //
 
 #include "Angel.h"
+#include <iostream>
+
+using namespace std;
 
 typedef Angel::vec4 point4;
 typedef Angel::vec4 color4;
@@ -292,6 +295,29 @@ void keyboard(unsigned char key, int x, int y)
 
 int main(int argc, char** argv)
 {
+    if (argc > 1) {
+        if (argc != 7 && argc != 8) {
+            cout << "Invalid arguments." << endl;
+            return 0;
+        }
+
+        double old_x, old_y, old_z, new_x, new_y, new_z;
+        old_x = atof(argv[1]);
+        old_y = atof(argv[2]);
+        old_z = atof(argv[3]);
+        new_x = atof(argv[4]);
+        new_y = atof(argv[5]);
+        new_z = atof(argv[6]);
+        if (argc == 8) {
+            if (strncmp(argv[7], "-tv", 4) == 0) {
+                is_side_view = false;
+            }
+            else if (strncmp(argv[7], "-sv", 4) == 0) {
+                is_side_view = true;
+            }
+        }
+    }
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
@@ -309,7 +335,7 @@ int main(int argc, char** argv)
     glutAddMenuEntry("base", Base);
     glutAddMenuEntry("lower arm", LowerArm);
     glutAddMenuEntry("upper arm", UpperArm);
-    glutAddMenuEntry("side view", SwitchView);
+    glutAddMenuEntry(is_side_view ? "side view" : "top view", SwitchView);
     glutAddMenuEntry("quit", Quit);
     glutAttachMenu(GLUT_MIDDLE_BUTTON);
 
