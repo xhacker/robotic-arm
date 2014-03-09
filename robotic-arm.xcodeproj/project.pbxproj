@@ -11,8 +11,8 @@
 		1A2CAAD218CBE59E0038FD74 /* InitShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A2CAAD118CBE59E0038FD74 /* InitShader.cpp */; };
 		1A2CAAD418CBE5DC0038FD74 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2CAAD318CBE5DC0038FD74 /* OpenGL.framework */; };
 		1A2CAAD618CBE5E00038FD74 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2CAAD518CBE5E00038FD74 /* GLUT.framework */; };
-		1A2CAADA18CBE6260038FD74 /* fshader81.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAD718CBE6020038FD74 /* fshader81.glsl */; };
-		1A2CAADB18CBE6260038FD74 /* vshader81.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAD818CBE6020038FD74 /* vshader81.glsl */; };
+		1A2CAADA18CBE6260038FD74 /* fshader.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAD718CBE6020038FD74 /* fshader.glsl */; };
+		1A2CAADB18CBE6260038FD74 /* vshader.glsl in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1A2CAAD818CBE6020038FD74 /* vshader.glsl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,8 +22,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				1A2CAADA18CBE6260038FD74 /* fshader81.glsl in CopyFiles */,
-				1A2CAADB18CBE6260038FD74 /* vshader81.glsl in CopyFiles */,
+				1A2CAADA18CBE6260038FD74 /* fshader.glsl in CopyFiles */,
+				1A2CAADB18CBE6260038FD74 /* vshader.glsl in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,8 +38,8 @@
 		1A2CAAD118CBE59E0038FD74 /* InitShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InitShader.cpp; sourceTree = "<group>"; };
 		1A2CAAD318CBE5DC0038FD74 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		1A2CAAD518CBE5E00038FD74 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		1A2CAAD718CBE6020038FD74 /* fshader81.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fshader81.glsl; sourceTree = "<group>"; };
-		1A2CAAD818CBE6020038FD74 /* vshader81.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vshader81.glsl; sourceTree = "<group>"; };
+		1A2CAAD718CBE6020038FD74 /* fshader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fshader.glsl; sourceTree = "<group>"; };
+		1A2CAAD818CBE6020038FD74 /* vshader.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = vshader.glsl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,8 +78,8 @@
 			children = (
 				1A2CAAC418CBE4B20038FD74 /* main.cpp */,
 				1A2CAAD118CBE59E0038FD74 /* InitShader.cpp */,
-				1A2CAAD718CBE6020038FD74 /* fshader81.glsl */,
-				1A2CAAD818CBE6020038FD74 /* vshader81.glsl */,
+				1A2CAAD718CBE6020038FD74 /* fshader.glsl */,
+				1A2CAAD818CBE6020038FD74 /* vshader.glsl */,
 				1A2CAAD018CBE56F0038FD74 /* Headers */,
 			);
 			path = "robotic-arm";
@@ -227,6 +227,7 @@
 		1A2CAACB18CBE4B20038FD74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -234,6 +235,7 @@
 		1A2CAACC18CBE4B20038FD74 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
