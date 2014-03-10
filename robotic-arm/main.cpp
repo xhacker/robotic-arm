@@ -65,6 +65,7 @@ const int Quit = 4;
 const int SwitchView = 5;
 
 bool is_side_view = true;
+bool has_sphere = false;
 double old_x, old_y, old_z, new_x, new_y, new_z;
 
 //----------------------------------------------------------------------------
@@ -159,9 +160,12 @@ void display(void)
         model_view = RotateX(0);
     }
     else {
-        model_view = RotateX(-90);
+        model_view = RotateX(90);
     }
-    sphere();
+
+    if (has_sphere) {
+        sphere();
+    }
 
     model_view *= RotateY(Theta[Base]);
     base();
@@ -306,6 +310,16 @@ void keyboard(unsigned char key, int x, int y)
 
 //----------------------------------------------------------------------------
 
+double arctan(double value)
+{
+    return atan(value) / (2 * M_PI) * 360;
+}
+
+double arccos(double value)
+{
+    return acos(value) / (2 * M_PI) * 360;
+}
+
 int main(int argc, char** argv)
 {
     if (argc > 1) {
@@ -313,6 +327,8 @@ int main(int argc, char** argv)
             cout << "Invalid arguments." << endl;
             return 0;
         }
+
+        has_sphere = true;
 
         old_x = atof(argv[1]);
         old_y = atof(argv[2]);
@@ -328,6 +344,26 @@ int main(int argc, char** argv)
                 is_side_view = true;
             }
         }
+    }
+
+    if (has_sphere) {
+        Theta[Base] = -arctan(old_z / old_x);
+
+        double x = sqrt(pow(old_x, 2) + pow(old_z, 2));
+        double y = old_y - BASE_HEIGHT;
+
+        double distance = sqrt(pow(x, 2) + pow(y, 2));
+        if (distance < 0 || distance > 10) {
+            cout << "Not reachable." << endl;
+            return 0;
+        }
+
+        // law of cosines, calculate the angle between two arms
+        double theta = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
+        double beta = 180 - theta;
+        double alpha = 90 - beta / 2 - arctan(y / x);
+        Theta[UpperArm] = -beta;
+        Theta[LowerArm] = -alpha;
     }
 
     glutInit(&argc, argv);
