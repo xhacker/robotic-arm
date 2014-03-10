@@ -8,6 +8,8 @@
 
 #include "Angel.h"
 #include <iostream>
+#include <sys/time.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -58,7 +60,8 @@ enum {
     NumAngles = 3
 };
 int Axis = Base;
-GLfloat Theta[NumAngles] = { 0.0 };
+GLfloat theta[NumAngles] = {0.0};
+GLfloat old_theta[NumAngles] = {0.0};
 
 // Menu option values
 const int Quit = 4;
@@ -67,6 +70,7 @@ const int SwitchView = 5;
 bool is_side_view = true;
 bool has_sphere = false;
 double old_x, old_y, old_z, new_x, new_y, new_z;
+timeval start_time;
 
 //----------------------------------------------------------------------------
 
@@ -167,13 +171,13 @@ void display(void)
         sphere();
     }
 
-    model_view *= RotateY(Theta[Base]);
+    model_view *= RotateY(theta[Base]);
     base();
 
-    model_view *= (Translate(0.0, BASE_HEIGHT, 0.0) * RotateZ(Theta[LowerArm]));
+    model_view *= (Translate(0.0, BASE_HEIGHT, 0.0) * RotateZ(theta[LowerArm]));
     lower_arm();
 
-    model_view *= (Translate(0.0, LOWER_ARM_HEIGHT, 0.0) * RotateZ(Theta[UpperArm]));
+    model_view *= (Translate(0.0, LOWER_ARM_HEIGHT, 0.0) * RotateZ(theta[UpperArm]));
     upper_arm();
 
     glutSwapBuffers();
@@ -228,17 +232,17 @@ void mouse(int button, int state, int x, int y)
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         // Incrase the joint angle
-        Theta[Axis] += 5.0;
-        if (Theta[Axis] > 360.0) {
-            Theta[Axis] -= 360.0;
+        theta[Axis] += 5.0;
+        if (theta[Axis] > 360.0) {
+            theta[Axis] -= 360.0;
         }
     }
 
     if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
         // Decrase the joint angle
-        Theta[Axis] -= 5.0;
-        if (Theta[Axis] < 0.0) {
-            Theta[Axis] += 360.0;
+        theta[Axis] -= 5.0;
+        if (theta[Axis] < 0.0) {
+            theta[Axis] += 360.0;
         }
     }
 
@@ -308,7 +312,21 @@ void keyboard(unsigned char key, int x, int y)
     }
 }
 
-//----------------------------------------------------------------------------
+void idle()
+{
+    usleep(200);
+    glutPostRedisplay();
+}
+
+double elapsed()
+{
+    timeval t;
+    gettimeofday(&t, NULL);
+    double elapsedTime;
+    elapsedTime = (t.tv_sec - start_time.tv_sec) * 1000.0;      // sec to ms
+    elapsedTime += (t.tv_usec - start_time.tv_usec) / 1000.0;   // us to ms
+    return elapsedTime;
+}
 
 double arctan(double value)
 {
@@ -346,8 +364,10 @@ int main(int argc, char** argv)
         }
     }
 
+    gettimeofday(&start_time, NULL);
+
     if (has_sphere) {
-        Theta[Base] = -arctan(old_z / old_x);
+        theta[Base] = -arctan(old_z / old_x);
 
         double x = sqrt(pow(old_x, 2) + pow(old_z, 2));
         double y = old_y - BASE_HEIGHT;
@@ -359,11 +379,11 @@ int main(int argc, char** argv)
         }
 
         // law of cosines, calculate the angle between two arms
-        double theta = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
-        double beta = 180 - theta;
+        double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
+        double beta = 180 - angle;
         double alpha = 90 - beta / 2 - arctan(y / x);
-        Theta[UpperArm] = -beta;
-        Theta[LowerArm] = -alpha;
+        theta[UpperArm] = -beta;
+        theta[LowerArm] = -alpha;
     }
 
     glutInit(&argc, argv);
@@ -377,6 +397,7 @@ int main(int argc, char** argv)
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
     glutMouseFunc(mouse);
+    glutIdleFunc(idle);
 
     glutCreateMenu(menu);
     // Set the menu values to the relevant rotation axis values (or Quit)
