@@ -72,8 +72,6 @@ bool has_sphere = false;
 double old_x, old_y, old_z, new_x, new_y, new_z;
 timeval start_time;
 
-//----------------------------------------------------------------------------
-
 int Index = 0;
 
 void quad(int a, int b, int c, int d)
@@ -108,8 +106,6 @@ void colorcube()
     quad(5, 4, 0, 1);
 }
 
-//----------------------------------------------------------------------------
-
 /* Define the four parts */
 /* Note use of push/pop to return modelview matrix
  to its state before functions were entered and use
@@ -134,8 +130,6 @@ void base()
     glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 }
 
-//----------------------------------------------------------------------------
-
 void upper_arm()
 {
     mat4 instance = (Translate(0.0, 0.5 * UPPER_ARM_HEIGHT, 0.0) * Scale(UPPER_ARM_WIDTH, UPPER_ARM_HEIGHT, UPPER_ARM_WIDTH));
@@ -143,8 +137,6 @@ void upper_arm()
     glUniformMatrix4fv(ModelView, 1, GL_TRUE, model_view * instance);
     glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 }
-
-//----------------------------------------------------------------------------
 
 void lower_arm()
 {
@@ -154,11 +146,55 @@ void lower_arm()
     glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 }
 
-//----------------------------------------------------------------------------
+int elapsed()
+{
+    timeval t;
+    gettimeofday(&t, NULL);
+    double elapsedTime;
+    elapsedTime = (t.tv_sec - start_time.tv_sec) * 1000.0;      // sec to ms
+    elapsedTime += (t.tv_usec - start_time.tv_usec) / 1000.0;   // us to ms
+    return elapsedTime;
+}
+
+const int kStepTime = 1000;
+
+enum {
+    GoToOldBase = 0,
+    GoToOldLower,
+    GoToOldUpper,
+    GoToNewBase,
+    GoToNewLower,
+    GoToNewUpper,
+    GoToHomeBase,
+    GoToHomeLower,
+    GoToHomeUpper
+};
+
+void update_theta()
+{
+    int step = elapsed() / kStepTime;
+    double progress = ((double)(elapsed() % kStepTime + 1)) / kStepTime;
+
+    switch (step) {
+        case GoToOldBase:
+            theta[Base] = progress * old_theta[Base];
+            break;
+        case GoToOldLower:
+            theta[LowerArm] = progress * old_theta[LowerArm];
+            break;
+        case GoToOldUpper:
+            theta[UpperArm] = progress * old_theta[UpperArm];
+            break;
+        default:
+            break;
+    }
+}
 
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    update_theta();
 
     if (is_side_view) {
         model_view = RotateX(0);
@@ -182,8 +218,6 @@ void display(void)
 
     glutSwapBuffers();
 }
-
-//----------------------------------------------------------------------------
 
 void init(void)
 {
@@ -225,8 +259,6 @@ void init(void)
     glClearColor(1.0, 1.0, 1.0, 1.0);
 }
 
-//----------------------------------------------------------------------------
-
 void mouse(int button, int state, int x, int y)
 {
 
@@ -249,8 +281,6 @@ void mouse(int button, int state, int x, int y)
     glutPostRedisplay();
 }
 
-//----------------------------------------------------------------------------
-
 void menu(int option)
 {
     if (option == Quit) {
@@ -271,8 +301,6 @@ void menu(int option)
         Axis = option;
     }
 }
-
-//----------------------------------------------------------------------------
 
 void reshape(int width, int height)
 {
@@ -299,8 +327,6 @@ void reshape(int width, int height)
     model_view = mat4(1.0); // An Identity matrix
 }
 
-//----------------------------------------------------------------------------
-
 void keyboard(unsigned char key, int x, int y)
 {
     switch (key) {
@@ -316,16 +342,6 @@ void idle()
 {
     usleep(200);
     glutPostRedisplay();
-}
-
-double elapsed()
-{
-    timeval t;
-    gettimeofday(&t, NULL);
-    double elapsedTime;
-    elapsedTime = (t.tv_sec - start_time.tv_sec) * 1000.0;      // sec to ms
-    elapsedTime += (t.tv_usec - start_time.tv_usec) / 1000.0;   // us to ms
-    return elapsedTime;
 }
 
 double arctan(double value)
@@ -367,7 +383,7 @@ int main(int argc, char** argv)
     gettimeofday(&start_time, NULL);
 
     if (has_sphere) {
-        theta[Base] = -arctan(old_z / old_x);
+        old_theta[Base] = -arctan(old_z / old_x);
 
         double x = sqrt(pow(old_x, 2) + pow(old_z, 2));
         double y = old_y - BASE_HEIGHT;
@@ -382,8 +398,8 @@ int main(int argc, char** argv)
         double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
         double beta = 180 - angle;
         double alpha = 90 - beta / 2 - arctan(y / x);
-        theta[UpperArm] = -beta;
-        theta[LowerArm] = -alpha;
+        old_theta[UpperArm] = -beta;
+        old_theta[LowerArm] = -alpha;
     }
 
     glutInit(&argc, argv);
