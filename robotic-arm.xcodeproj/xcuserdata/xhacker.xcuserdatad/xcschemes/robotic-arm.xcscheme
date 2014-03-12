@@ -59,8 +59,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "3 5 4 9 3 3"
+            argument = "3 5 4 -5 -5 -5 -sv"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-3 -5 -4 -5 -5 -5 -sv"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

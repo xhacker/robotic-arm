@@ -299,6 +299,9 @@ void init(void)
 
 void mouse(int button, int state, int x, int y)
 {
+    if (has_sphere && step < AnimationFinished) {
+        return;
+    }
 
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         // Incrase the joint angle
@@ -437,6 +440,12 @@ int main(int argc, char** argv)
             double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
             double beta = 180 - angle;
             double alpha = 90 - beta / 2 - arctan(y / x);
+
+            if (old_x < 0) {
+                beta = -beta;
+                alpha = -alpha;
+            }
+
             old_theta[UpperArm] = -beta;
             old_theta[LowerArm] = -alpha;
         }
@@ -456,6 +465,12 @@ int main(int argc, char** argv)
             double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
             double beta = 180 - angle;
             double alpha = 90 - beta / 2 - arctan(y / x);
+
+            if (new_x < 0) {
+                beta = -beta;
+                alpha = -alpha;
+            }
+
             new_theta[UpperArm] = -beta;
             new_theta[LowerArm] = -alpha;
         }
