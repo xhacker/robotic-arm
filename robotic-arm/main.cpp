@@ -168,7 +168,8 @@ enum {
     GoToNewUpper,
     GoToHomeBase,
     GoToHomeLower,
-    GoToHomeUpper
+    GoToHomeUpper,
+    AnimationFinished
 };
 
 void update_theta()
@@ -194,6 +195,20 @@ void update_theta()
             break;
         case GoToNewUpper:
             theta[UpperArm] = old_theta[UpperArm] + progress * (new_theta[UpperArm] - old_theta[UpperArm]);
+            break;
+        case GoToHomeBase:
+            theta[Base] = (1 - progress) * new_theta[Base];
+            break;
+        case GoToHomeLower:
+            theta[Base] = 0;
+            theta[LowerArm] = (1 - progress) * new_theta[LowerArm];
+            break;
+        case GoToHomeUpper:
+            theta[LowerArm] = 0;
+            theta[UpperArm] = (1 - progress) * new_theta[UpperArm];
+            break;
+        case AnimationFinished:
+            theta[UpperArm] = 0;
             break;
         default:
             break;
