@@ -8,6 +8,7 @@
 
 #include "Angel.h"
 #include <iostream>
+#include <cstring>
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -263,8 +264,8 @@ void init(void)
 
     // Create a vertex array object
     GLuint vao;
-    glGenVertexArraysAPPLE(1, &vao);
-    glBindVertexArrayAPPLE(vao);
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
     // Create and initialize a buffer object
     GLuint buffer;
@@ -488,6 +489,10 @@ int main(int argc, char** argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(512, 512);
     glutCreateWindow("robot");
+
+#ifndef __APPLE__
+    glewInit();
+#endif
 
     init();
 
