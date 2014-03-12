@@ -144,7 +144,9 @@ void sphere()
 
     glUniformMatrix4fv(ModelView, 1, GL_TRUE, model_view * instance);
 
-    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+    // glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+
+    glutSolidSphere(0.75, 20, 20);
 }
 
 void base()
@@ -293,7 +295,7 @@ void init(void)
     Projection = glGetUniformLocation(program, "Projection");
 
     glEnable(GL_DEPTH);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glClearColor(1.0, 1.0, 1.0, 1.0);
 }
