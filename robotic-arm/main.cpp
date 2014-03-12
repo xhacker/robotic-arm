@@ -411,6 +411,14 @@ int main(int argc, char** argv)
         new_x = atof(argv[4]);
         new_y = atof(argv[5]);
         new_z = atof(argv[6]);
+
+        if (old_x == 0) {
+            old_x = 0.00001;
+        }
+        if (new_x == 0) {
+            new_x = 0.00001;
+        }
+
         if (argc == 8) {
             if (strncmp(argv[7], "-tv", 4) == 0) {
                 is_side_view = false;
