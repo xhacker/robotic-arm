@@ -62,6 +62,7 @@ enum {
 int Axis = Base;
 GLfloat theta[NumAngles] = {0.0};
 GLfloat old_theta[NumAngles] = {0.0};
+GLfloat new_theta[NumAngles] = {0.0};
 
 // Menu option values
 const int Quit = 4;
@@ -184,6 +185,15 @@ void update_theta()
             break;
         case GoToOldUpper:
             theta[UpperArm] = progress * old_theta[UpperArm];
+            break;
+        case GoToNewBase:
+            theta[Base] = old_theta[Base] + progress * (new_theta[Base] - old_theta[Base]);
+            break;
+        case GoToNewLower:
+            theta[LowerArm] = old_theta[LowerArm] + progress * (new_theta[LowerArm] - old_theta[LowerArm]);
+            break;
+        case GoToNewUpper:
+            theta[UpperArm] = old_theta[UpperArm] + progress * (new_theta[UpperArm] - old_theta[UpperArm]);
             break;
         default:
             break;
@@ -383,23 +393,44 @@ int main(int argc, char** argv)
     gettimeofday(&start_time, NULL);
 
     if (has_sphere) {
-        old_theta[Base] = -arctan(old_z / old_x);
+        {
+            old_theta[Base] = -arctan(old_z / old_x);
 
-        double x = sqrt(pow(old_x, 2) + pow(old_z, 2));
-        double y = old_y - BASE_HEIGHT;
+            double x = sqrt(pow(old_x, 2) + pow(old_z, 2));
+            double y = old_y - BASE_HEIGHT;
 
-        double distance = sqrt(pow(x, 2) + pow(y, 2));
-        if (distance < 0 || distance > 10) {
-            cout << "Not reachable." << endl;
-            return 0;
+            double distance = sqrt(pow(x, 2) + pow(y, 2));
+            if (distance < 0 || distance > 10) {
+                cout << "Not reachable." << endl;
+                return 0;
+            }
+
+            // law of cosines, calculate the angle between two arms
+            double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
+            double beta = 180 - angle;
+            double alpha = 90 - beta / 2 - arctan(y / x);
+            old_theta[UpperArm] = -beta;
+            old_theta[LowerArm] = -alpha;
         }
+        {
+            new_theta[Base] = -arctan(new_z / new_x);
 
-        // law of cosines, calculate the angle between two arms
-        double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
-        double beta = 180 - angle;
-        double alpha = 90 - beta / 2 - arctan(y / x);
-        old_theta[UpperArm] = -beta;
-        old_theta[LowerArm] = -alpha;
+            double x = sqrt(pow(new_x, 2) + pow(new_z, 2));
+            double y = new_y - BASE_HEIGHT;
+
+            double distance = sqrt(pow(x, 2) + pow(y, 2));
+            if (distance < 0 || distance > 10) {
+                cout << "Not reachable." << endl;
+                return 0;
+            }
+
+            // law of cosines, calculate the angle between two arms
+            double angle = arccos((50 - (pow(x, 2) + pow(y, 2))) / 50);
+            double beta = 180 - angle;
+            double alpha = 90 - beta / 2 - arctan(y / x);
+            new_theta[UpperArm] = -beta;
+            new_theta[LowerArm] = -alpha;
+        }
     }
 
     glutInit(&argc, argv);
