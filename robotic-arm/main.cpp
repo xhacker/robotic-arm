@@ -72,6 +72,23 @@ bool is_side_view = true;
 bool has_sphere = false;
 double old_x, old_y, old_z, new_x, new_y, new_z;
 timeval start_time;
+int step = 0;
+double progress = 0.0;
+
+const int kStepTime = 1000;
+
+enum {
+    GoToOldBase = 0,
+    GoToOldLower,
+    GoToOldUpper,
+    GoToNewBase,
+    GoToNewLower,
+    GoToNewUpper,
+    GoToHomeBase,
+    GoToHomeLower,
+    GoToHomeUpper,
+    AnimationFinished
+};
 
 int Index = 0;
 
@@ -117,6 +134,13 @@ void sphere()
 {
     mat4 instance = (Translate(old_x, old_y, old_z) * Scale(SPHERE_R, SPHERE_R, SPHERE_R));
 
+    if (step >= GoToNewBase && step < GoToHomeBase) {
+        instance = (Translate(0, LOWER_ARM_HEIGHT, 0) * Scale(SPHERE_R, SPHERE_R, SPHERE_R));
+    }
+    else if (step >= GoToHomeBase) {
+        instance = (Translate(new_x, new_y, new_z) * Scale(SPHERE_R, SPHERE_R, SPHERE_R));
+    }
+
     glUniformMatrix4fv(ModelView, 1, GL_TRUE, model_view * instance);
 
     glDrawArrays(GL_TRIANGLES, 0, NumVertices);
@@ -157,25 +181,10 @@ int elapsed()
     return elapsedTime;
 }
 
-const int kStepTime = 1000;
-
-enum {
-    GoToOldBase = 0,
-    GoToOldLower,
-    GoToOldUpper,
-    GoToNewBase,
-    GoToNewLower,
-    GoToNewUpper,
-    GoToHomeBase,
-    GoToHomeLower,
-    GoToHomeUpper,
-    AnimationFinished
-};
-
 void update_theta()
 {
-    int step = elapsed() / kStepTime;
-    double progress = ((double)(elapsed() % kStepTime + 1)) / kStepTime;
+    step = elapsed() / kStepTime;
+    progress = ((double)(elapsed() % kStepTime + 1)) / kStepTime;
 
     switch (step) {
         case GoToOldBase:
@@ -228,7 +237,7 @@ void display(void)
         model_view = RotateX(90);
     }
 
-    if (has_sphere) {
+    if (has_sphere && (step < GoToNewBase || step >= GoToHomeBase)) {
         sphere();
     }
 
@@ -240,6 +249,10 @@ void display(void)
 
     model_view *= (Translate(0.0, LOWER_ARM_HEIGHT, 0.0) * RotateZ(theta[UpperArm]));
     upper_arm();
+
+    if (has_sphere && step >= GoToNewBase && step < GoToHomeBase) {
+        sphere();
+    }
 
     glutSwapBuffers();
 }
