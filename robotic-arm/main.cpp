@@ -144,7 +144,9 @@ void sphere()
 
     glUniformMatrix4fv(ModelView, 1, GL_TRUE, model_view * instance);
 
-    // glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+#ifdef __APPLE__
+    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+#endif
 
     glutSolidSphere(0.75, 20, 20);
 }
@@ -237,7 +239,7 @@ void display(void)
         model_view = RotateX(0);
     }
     else {
-        model_view = RotateX(90);
+        model_view = (Translate(0, BASE_WIDTH, 0) * RotateX(90.0));
     }
 
     if (has_sphere && (step < GoToNewBase || step >= GoToHomeBase)) {
