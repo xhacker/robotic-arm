@@ -23,7 +23,7 @@ SOURCE= main.cpp InitShader.cpp
 CC= g++
 
 # The name of the final executable
-EXECUTABLE= robotic-arm
+EXECUTABLE= myrobot
 
 # Linux (default)
 CFLAGS= -O3 -g -Wall -pedantic -DGL_GLEXT_PROTOTYPES
